@@ -26,7 +26,7 @@ const I_PAD_MINI = {
 };
 const I_PHONE_SE_LANDSCAPE = {
   key: 'iPhone SE landscape',
-  fileName: 'i-phone-se',
+  fileName: 'i-phone-se-landscape',
 };
 const I_PHONE_SE = {
   key: 'iPhone SE',
