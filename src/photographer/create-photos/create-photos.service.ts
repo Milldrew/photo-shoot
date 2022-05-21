@@ -1,5 +1,13 @@
 import * as puppeteer from 'puppeteer';
 import { Injectable } from '@nestjs/common';
+const I_PAD_GEN_7 = {
+  key: 'iPad (gen 7)',
+  fileName: 'i-pad-gen-7',
+};
+const I_PAD_GEN_7_LANDSCAPE = {
+  key: 'iPad (gen 7) landscape',
+  fileName: 'i-pad-gen-7-landscape',
+};
 const I_PAD_MINI_LANDSCAPE = {
   key: 'iPad Mini landscape',
   fileName: 'i-pad-mini-landscape',
@@ -46,6 +54,8 @@ export class CreatePhotosService {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       await page.goto('https://example.com');
+      await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
+      await this.takeShot(I_PAD_GEN_7, page);
       await this.takeShot(I_PAD_MINI_LANDSCAPE, page);
       await this.takeShot(I_PAD_MINI, page);
       await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
