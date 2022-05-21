@@ -78,6 +78,24 @@ export class CreatePhotosService {
       await this.takeShot(I_PHONE_13_PRO_MAX, page);
       await this.takeShot(I_PHONE_13_LANDSCAPE, page);
       await this.takeShot(I_PHONE_13, page);
+
+      await page.emulate({
+        viewport: { width: 1920, height: 1080 },
+        userAgent: 'Desktop Computer 2',
+      });
+
+      await page.screenshot({
+        path: `./photographer_photos/1929x1080.png`,
+      });
+
+      await page.emulate({
+        viewport: { width: 1366, height: 768 },
+        userAgent: 'Desktop Computer',
+      });
+
+      await page.screenshot({
+        path: `./photographer_photos/1366x768.png`,
+      });
       await browser.close();
     })();
   }
