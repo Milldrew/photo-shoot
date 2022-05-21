@@ -1,5 +1,13 @@
 import * as puppeteer from 'puppeteer';
 import { Injectable } from '@nestjs/common';
+const I_PHONE_SE_LANDSCAPE = {
+  key: 'iPhone SE landscape',
+  fileName: 'i-phone-se',
+};
+const I_PHONE_SE = {
+  key: 'iPhone SE',
+  fileName: 'i-phone-se',
+};
 const I_PHONE_13_MINI = {
   key: 'iPhone 13 Mini',
   fileName: 'i-phone-13-mini',
@@ -30,6 +38,8 @@ export class CreatePhotosService {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       await page.goto('https://example.com');
+      await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
+      await this.takeShot(I_PHONE_SE, page);
       await this.takeShot(I_PHONE_13_MINI_LANDSCAPE, page);
       await this.takeShot(I_PHONE_13_MINI, page);
       await this.takeShot(I_PHONE_13_PRO_MAX_LANDSCAPE, page);
