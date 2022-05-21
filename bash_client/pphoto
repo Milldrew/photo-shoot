@@ -1,0 +1,1 @@
+curl -d '{"name": "foo", "brand": "bar", "flavors": ["foo", "bar", "qux"]}' -H "Content-Type: application/json" 'http://localhost:3000/photographer/'$1
