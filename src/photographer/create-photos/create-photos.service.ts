@@ -56,6 +56,8 @@ export class CreatePhotosService {
       await page.goto('https://example.com');
       await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
       await this.takeShot(I_PAD_GEN_7, page);
+      await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
+      await this.takeShot(I_PAD_GEN_7, page);
       await this.takeShot(I_PAD_MINI_LANDSCAPE, page);
       await this.takeShot(I_PAD_MINI, page);
       await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
