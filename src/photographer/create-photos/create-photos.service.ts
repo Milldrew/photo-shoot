@@ -18,6 +18,8 @@ export class CreatePhotosService {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       await page.goto('https://example.com');
+      await this.takeShot(I_PHONE_13_PRO_MAX_LANDSCAPE, page);
+      await this.takeShot(I_PHONE_13_LANDSCAPE, page);
       await this.takeShot(I_PHONE_13, page);
       await browser.close();
     })();
