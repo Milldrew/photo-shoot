@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 const I_PAD_PRO_11 = {
   key: 'iPad Pro 11',
   fileName: 'i-pad-pro-11',
@@ -59,44 +59,48 @@ type ChosenDevice = { key: string; fileName: string };
 export class CreatePhotosService {
   takePhotos(url: string) {
     (async () => {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await page.goto(url);
-      await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
-      await this.takeShot(I_PAD_PRO_11, page);
-      await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
-      await this.takeShot(I_PAD_GEN_7, page);
-      await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
-      await this.takeShot(I_PAD_GEN_7, page);
-      await this.takeShot(I_PAD_MINI_LANDSCAPE, page);
-      await this.takeShot(I_PAD_MINI, page);
-      await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
-      await this.takeShot(I_PHONE_SE, page);
-      await this.takeShot(I_PHONE_13_MINI_LANDSCAPE, page);
-      await this.takeShot(I_PHONE_13_MINI, page);
-      await this.takeShot(I_PHONE_13_PRO_MAX_LANDSCAPE, page);
-      await this.takeShot(I_PHONE_13_PRO_MAX, page);
-      await this.takeShot(I_PHONE_13_LANDSCAPE, page);
-      await this.takeShot(I_PHONE_13, page);
+      try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto(url);
+        await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
+        await this.takeShot(I_PAD_PRO_11, page);
+        await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
+        await this.takeShot(I_PAD_GEN_7, page);
+        await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
+        await this.takeShot(I_PAD_GEN_7, page);
+        await this.takeShot(I_PAD_MINI_LANDSCAPE, page);
+        await this.takeShot(I_PAD_MINI, page);
+        await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
+        await this.takeShot(I_PHONE_SE, page);
+        await this.takeShot(I_PHONE_13_MINI_LANDSCAPE, page);
+        await this.takeShot(I_PHONE_13_MINI, page);
+        await this.takeShot(I_PHONE_13_PRO_MAX_LANDSCAPE, page);
+        await this.takeShot(I_PHONE_13_PRO_MAX, page);
+        await this.takeShot(I_PHONE_13_LANDSCAPE, page);
+        await this.takeShot(I_PHONE_13, page);
 
-      await page.emulate({
-        viewport: { width: 1920, height: 1080 },
-        userAgent: 'Desktop Computer 2',
-      });
+        await page.emulate({
+          viewport: { width: 1920, height: 1080 },
+          userAgent: 'Desktop Computer 2',
+        });
 
-      await page.screenshot({
-        path: `./photographer_photos/1929x1080.png`,
-      });
+        await page.screenshot({
+          path: `./photographer_photos/1929x1080.png`,
+        });
 
-      await page.emulate({
-        viewport: { width: 1366, height: 768 },
-        userAgent: 'Desktop Computer',
-      });
+        await page.emulate({
+          viewport: { width: 1366, height: 768 },
+          userAgent: 'Desktop Computer',
+        });
 
-      await page.screenshot({
-        path: `./photographer_photos/1366x768.png`,
-      });
-      await browser.close();
+        await page.screenshot({
+          path: `./photographer_photos/1366x768.png`,
+        });
+        await browser.close();
+      } catch (error) {
+        return new HttpException('Invalid url', 400);
+      }
     })();
   }
   async takeShot(device: ChosenDevice, page: puppeteer.Page) {

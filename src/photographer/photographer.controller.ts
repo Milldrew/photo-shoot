@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PhotographerService } from './photographer.service';
 import { CreatePhotographerDto } from './dto/create-photographer.dto';
 import { UpdatePhotographerDto } from './dto/update-photographer.dto';
@@ -9,6 +17,7 @@ export class PhotographerController {
 
   @Post()
   create(@Body() createPhotographerDto: CreatePhotographerDto) {
+    console.log(createPhotographerDto);
     return this.photographerService.create(createPhotographerDto);
   }
 
@@ -23,7 +32,10 @@ export class PhotographerController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePhotographerDto: UpdatePhotographerDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePhotographerDto: UpdatePhotographerDto,
+  ) {
     return this.photographerService.update(+id, updatePhotographerDto);
   }
 
