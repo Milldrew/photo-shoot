@@ -1,1 +1,3 @@
-export class CreatePhotographerDto {}
+export class CreatePhotographerDto {
+  url: string;
+}

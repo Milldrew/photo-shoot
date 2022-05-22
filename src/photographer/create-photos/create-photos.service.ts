@@ -57,11 +57,11 @@ type ChosenDevice = { key: string; fileName: string };
 
 @Injectable()
 export class CreatePhotosService {
-  takePhotos() {
+  takePhotos(url: string) {
     (async () => {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      await page.goto('https://example.com');
+      await page.goto(url);
       await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
       await this.takeShot(I_PAD_PRO_11, page);
       await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
