@@ -61,7 +61,9 @@ export class CreatePhotosService {
     await (async () => {
       console.time('puppeteer');
       try {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+          args: ['--disable-dev-shm-usage'],
+        });
         const page = await browser.newPage();
         await page.goto(url);
         await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
@@ -103,7 +105,8 @@ export class CreatePhotosService {
         console.timeEnd('puppeteer');
         console.log('puppeteer finished');
       } catch (error) {
-        console.log('puppeteer error');
+        console.log('PUPPETEER ERROR');
+        console.error(error);
         throw new HttpException('Invalid url', 400);
       }
     })();
