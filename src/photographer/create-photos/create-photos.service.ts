@@ -57,8 +57,9 @@ type ChosenDevice = { key: string; fileName: string };
 
 @Injectable()
 export class CreatePhotosService {
-  takePhotos(url: string) {
-    (async () => {
+  async takePhotos(url: string) {
+    await (async () => {
+      console.time('puppeteer');
       try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
@@ -98,10 +99,15 @@ export class CreatePhotosService {
           path: `./photographer_photos/1366x768.png`,
         });
         await browser.close();
+        console.timeLog('puppeteer');
+        console.timeEnd('puppeteer');
+        console.log('puppeteer finished');
       } catch (error) {
+        console.log('puppeteer error');
         return new HttpException('Invalid url', 400);
       }
     })();
+    return 'photos taken';
   }
   async takeShot(device: ChosenDevice, page: puppeteer.Page) {
     const deviceOptions = puppeteer.devices[device.key];

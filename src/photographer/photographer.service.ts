@@ -8,7 +8,7 @@ export class PhotographerService {
   constructor(private readonly createPhotos: CreatePhotosService) {}
 
   create(createPhotographerDto: CreatePhotographerDto) {
-    this.createPhotos.takePhotos(createPhotographerDto.url);
+    return this.createPhotos.takePhotos(createPhotographerDto.url);
   }
 
   findAll() {
