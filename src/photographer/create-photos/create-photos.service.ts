@@ -104,10 +104,10 @@ export class CreatePhotosService {
         console.log('puppeteer finished');
       } catch (error) {
         console.log('puppeteer error');
-        return new HttpException('Invalid url', 400);
+        throw new HttpException('Invalid url', 400);
       }
     })();
-    return 'photos taken';
+    return { status: 'photoshoot finished' };
   }
   async takeShot(device: ChosenDevice, page: puppeteer.Page) {
     const deviceOptions = puppeteer.devices[device.key];
