@@ -15,9 +15,7 @@ WORKDIR /usr/src/app/
 RUN yarn install
 RUN yarn build
 
-RUN npm prune --production
 
-RUN /usr/local/bin/node-prune
 
 FROM alpine
 #===================
@@ -37,21 +35,19 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # Puppeteer v13.5.0 works with Chromium 100.
-RUN yarn add puppeteer@13.5.0
 
-
-# Run everything after as non-privileged user.
 RUN addgroup -S 1000 && adduser -S -G 1000 1000
 #===================
-USER 1000
 RUN mkdir -p /home/node/app/
 RUN mkdir -p /home/node/app/node_modules
 RUN mkdir -p /home/node/app/dist
+RUN mkdir -p /home/node/app/photographer_photos
 
 RUN chown -R 1000:1000 /home/node/app
 RUN chown -R 1000:1000 /home/node/app/node_modules
 RUN chown -R 1000:1000 /home/node/app/dist
 
+USER 1000
 WORKDIR /home/node/app
 
 COPY --from=BUILD_IMAGE /usr/src/app/dist /home/node/app/dist
