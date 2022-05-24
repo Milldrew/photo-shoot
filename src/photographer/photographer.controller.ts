@@ -18,7 +18,6 @@ export class PhotographerController {
   @Post()
   create(@Body() createPhotographerDto: CreatePhotographerDto) {
     console.log(createPhotographerDto);
-    console.time();
     return this.photographerService.create(createPhotographerDto);
   }
 
