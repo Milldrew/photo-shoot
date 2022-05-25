@@ -120,10 +120,10 @@ export class CreatePhotosService {
     })();
     return { status: 'photoshoot finished' };
   }
-  async scrollToElement(page, elementSelector) {
-    await page.$eval(elementSelector, (footer) => {
-      if (footer) {
-        footer.scrollIntoView();
+  async scrollToElement(page: puppeteer.Page, elementSelector) {
+    await page.$eval(elementSelector, () => {
+      if (elementSelector) {
+        elementSelector.scrollIntoView();
       }
     });
   }
