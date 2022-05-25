@@ -65,54 +65,57 @@ export class CreatePhotosService {
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
-        if (await page.$(elementSelector)) {
-          try {
+        console.log('HELLO BEFORE SCROLL');
+        try {
+          const element = await page.$(elementSelector);
+          if (element) {
             await page.waitForSelector(elementSelector);
             await page.$eval(elementSelector, (targetElement) => {
               if (targetElement) {
+                console.log('HELLO FROM SCROLL');
                 targetElement.scrollIntoView();
               }
             });
-          } catch (error) {
-            throw new HttpException(error.message, 400);
           }
+        } catch (error) {
+          console.error(error);
+          await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
+          await this.takeShot(I_PAD_PRO_11, page);
+          await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
+          await this.takeShot(I_PAD_GEN_7, page);
+          await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
+          await this.takeShot(I_PAD_GEN_7, page);
+          await this.takeShot(I_PAD_MINI_LANDSCAPE, page);
+          await this.takeShot(I_PAD_MINI, page);
+          await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
+          await this.takeShot(I_PHONE_SE, page);
+          await this.takeShot(I_PHONE_13_MINI_LANDSCAPE, page);
+          await this.takeShot(I_PHONE_13_MINI, page);
+          await this.takeShot(I_PHONE_13_PRO_MAX_LANDSCAPE, page);
+          await this.takeShot(I_PHONE_13_PRO_MAX, page);
+          await this.takeShot(I_PHONE_13_LANDSCAPE, page);
+          await this.takeShot(I_PHONE_13, page);
+
+          await page.emulate({
+            viewport: { width: 1920, height: 1080 },
+            userAgent: 'Desktop Computer 2',
+          });
+
+          await page.screenshot({
+            path: `./photographer_photos/1929x1080.png`,
+          });
+
+          await page.emulate({
+            viewport: { width: 1366, height: 768 },
+            userAgent: 'Desktop Computer',
+          });
+
+          await page.screenshot({
+            path: `./photographer_photos/1366x768.png`,
+          });
+          await browser.close();
+          console.log('puppeteer finished');
         }
-        await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
-        await this.takeShot(I_PAD_PRO_11, page);
-        await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
-        await this.takeShot(I_PAD_GEN_7, page);
-        await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
-        await this.takeShot(I_PAD_GEN_7, page);
-        await this.takeShot(I_PAD_MINI_LANDSCAPE, page);
-        await this.takeShot(I_PAD_MINI, page);
-        await this.takeShot(I_PHONE_SE_LANDSCAPE, page);
-        await this.takeShot(I_PHONE_SE, page);
-        await this.takeShot(I_PHONE_13_MINI_LANDSCAPE, page);
-        await this.takeShot(I_PHONE_13_MINI, page);
-        await this.takeShot(I_PHONE_13_PRO_MAX_LANDSCAPE, page);
-        await this.takeShot(I_PHONE_13_PRO_MAX, page);
-        await this.takeShot(I_PHONE_13_LANDSCAPE, page);
-        await this.takeShot(I_PHONE_13, page);
-
-        await page.emulate({
-          viewport: { width: 1920, height: 1080 },
-          userAgent: 'Desktop Computer 2',
-        });
-
-        await page.screenshot({
-          path: `./photographer_photos/1929x1080.png`,
-        });
-
-        await page.emulate({
-          viewport: { width: 1366, height: 768 },
-          userAgent: 'Desktop Computer',
-        });
-
-        await page.screenshot({
-          path: `./photographer_photos/1366x768.png`,
-        });
-        await browser.close();
-        console.log('puppeteer finished');
       } catch (error) {
         console.log('PUPPETEER ERROR');
         console.error(error);
