@@ -59,19 +59,24 @@ type ChosenDevice = { key: string; fileName: string };
 export class CreatePhotosService {
   async takePhotos(url: string, elementSelector: string) {
     await (async () => {
-      console.time('puppeteer');
       try {
         const browser = await puppeteer.launch({
           args: ['--disable-dev-shm-usage'],
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
-        await page.waitForSelector(elementSelector);
-        await page.$eval(elementSelector, (targetElement) => {
-          if (targetElement) {
-            targetElement.scrollIntoView();
+        if (await page.$(elementSelector)) {
+          try {
+            await page.waitForSelector(elementSelector);
+            await page.$eval(elementSelector, (targetElement) => {
+              if (targetElement) {
+                targetElement.scrollIntoView();
+              }
+            });
+          } catch (error) {
+            throw new HttpException(error.message, 400);
           }
-        });
+        }
         await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
         await this.takeShot(I_PAD_PRO_11, page);
         await this.takeShot(I_PAD_GEN_7_LANDSCAPE, page);
@@ -107,13 +112,11 @@ export class CreatePhotosService {
           path: `./photographer_photos/1366x768.png`,
         });
         await browser.close();
-        console.timeLog('puppeteer');
-        console.timeEnd('puppeteer');
         console.log('puppeteer finished');
       } catch (error) {
         console.log('PUPPETEER ERROR');
         console.error(error);
-        throw new HttpException('Invalid url', 400);
+        throw new HttpException(error.message, 400);
       }
     })();
     return { status: 'photoshoot finished' };
