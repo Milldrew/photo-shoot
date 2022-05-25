@@ -66,7 +66,6 @@ export class CreatePhotosService {
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
         console.log('HELLO BEFORE SCROLL');
-        const element = await page.$(elementSelector);
         if (element) {
           await page.waitForSelector(elementSelector);
           await page.$eval(elementSelector, (targetElement) => {
@@ -120,12 +119,15 @@ export class CreatePhotosService {
     })();
     return { status: 'photoshoot finished' };
   }
-  async scrollToElement(page: puppeteer.Page, elementSelector) {
-    await page.$eval(elementSelector, () => {
-      if (elementSelector) {
-        elementSelector.scrollIntoView();
-      }
-    });
+  async scrollToElement(page: puppeteer.Page, elementSelector: string) {
+    try {
+      await page.$(elementSelector);
+      await page.$eval(elementSelector, (selectedElement) => {
+        selectedElement.scrollIntoView();
+      });
+    } catch (error) {
+      console.error('selector error');
+    }
   }
   async takeShot(device: ChosenDevice, page: puppeteer.Page) {
     const deviceOptions = puppeteer.devices[device.key];
