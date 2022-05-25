@@ -67,9 +67,9 @@ export class CreatePhotosService {
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
         await page.waitForSelector(`#${elementId}`);
-        await page.$eval(`#${elementId}`, (footer) => {
-          if (footer) {
-            footer.scrollIntoView();
+        await page.$eval(`#${elementId}`, (targetElement) => {
+          if (targetElement) {
+            targetElement.scrollIntoView();
           }
         });
         await this.takeShot(I_PAD_PRO_11_LANDSCAPE, page);
