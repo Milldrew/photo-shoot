@@ -57,7 +57,7 @@ type ChosenDevice = { key: string; fileName: string };
 
 @Injectable()
 export class CreatePhotosService {
-  async takePhotos(url: string, elementId: string) {
+  async takePhotos(url: string, elementSelector: string) {
     await (async () => {
       console.time('puppeteer');
       try {
@@ -66,8 +66,8 @@ export class CreatePhotosService {
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
-        await page.waitForSelector(`#${elementId}`);
-        await page.$eval(`#${elementId}`, (targetElement) => {
+        await page.waitForSelector(elementSelector);
+        await page.$eval(elementSelector, (targetElement) => {
           if (targetElement) {
             targetElement.scrollIntoView();
           }
