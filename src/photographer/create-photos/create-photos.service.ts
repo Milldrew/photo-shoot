@@ -51,12 +51,15 @@ export class CreatePhotosService {
     page: puppeteer.Page,
     elementSelector: string,
   ) {
+    this.response = { selectorStatus: 'success' };
     try {
       await page.evaluate((selector) => {
         document.querySelector(selector).scrollIntoView();
       }, elementSelector);
     } catch (error) {
-      this.response.selectorStatus = `invalid selector ${elementSelector}`;
+      if (elementSelector !== '')
+        this.response.selectorStatus = `invalid selector ${elementSelector}`;
+      console.error('selector error');
     }
 
     await page.screenshot({

@@ -75,5 +75,6 @@ export class DevicesService {
     I_PAD_MINI_LANDSCAPE,
     I_PAD_PRO_11_LANDSCAPE,
   ];
+
   createDevice() {}
 }
