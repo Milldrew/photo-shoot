@@ -1,0 +1,1 @@
+docker tag andrewpatrickmiller/robot-photographer:photo-server gcr.io/robot-photographer/app:latest
