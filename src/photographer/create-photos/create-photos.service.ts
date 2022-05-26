@@ -9,6 +9,7 @@ export class CreatePhotosService {
   response: PptrRes = {};
   constructor(private devices: DevicesService) {}
   async takePhotos(url: string, elementSelector: string) {
+    this.response.responseStatus = 'sucess';
     await (async () => {
       const browser = await puppeteer.launch({
         args: ['--disable-dev-shm-usage'],
@@ -57,9 +58,11 @@ export class CreatePhotosService {
         document.querySelector(selector).scrollIntoView();
       }, elementSelector);
     } catch (error) {
-      if (elementSelector !== '')
+      if (elementSelector !== '') {
         this.response.responseStatus = `invalid selector ${elementSelector}`;
-      else this.response.responseStatus = 'sucess';
+      } else {
+        this.response.responseStatus = 'sucess';
+      }
 
       console.error('selector error');
     }
