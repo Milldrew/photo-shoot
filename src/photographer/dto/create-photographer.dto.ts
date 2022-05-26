@@ -1,4 +1,4 @@
 export class CreatePhotographerDto {
   url: string;
-  elementId?: string;
+  elementSelector?: string;
 }

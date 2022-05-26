@@ -10,7 +10,7 @@ export class PhotographerService {
   create(createPhotographerDto: CreatePhotographerDto) {
     return this.createPhotos.takePhotos(
       createPhotographerDto.url,
-      createPhotographerDto.elementId,
+      createPhotographerDto.elementSelector,
     );
   }
 
