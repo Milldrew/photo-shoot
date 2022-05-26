@@ -3,7 +3,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { ChosenDevice } from './devices';
 import { DevicesService } from './devices/devices.service';
 
-type PptrRes = { selectorStatus?: string };
+type PptrRes = { responseStatus?: string };
 @Injectable()
 export class CreatePhotosService {
   response: PptrRes = {};
@@ -39,6 +39,7 @@ export class CreatePhotosService {
         });
         await this.takeShot('1366x768', page, elementSelector);
       } catch (error) {
+        this.response.responseStatus = `URL Error: ${url} try a different format`;
         console.error(error);
       }
       await browser.close();
@@ -51,14 +52,15 @@ export class CreatePhotosService {
     page: puppeteer.Page,
     elementSelector: string,
   ) {
-    this.response = { selectorStatus: 'success' };
     try {
       await page.evaluate((selector) => {
         document.querySelector(selector).scrollIntoView();
       }, elementSelector);
     } catch (error) {
       if (elementSelector !== '')
-        this.response.selectorStatus = `invalid selector ${elementSelector}`;
+        this.response.responseStatus = `invalid selector ${elementSelector}`;
+      else this.response.responseStatus = 'sucess';
+
       console.error('selector error');
     }
 
