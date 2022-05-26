@@ -3,8 +3,10 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { ChosenDevice } from './devices';
 import { DevicesService } from './devices/devices.service';
 
+type PptrRes = { selectorStatus?: string };
 @Injectable()
 export class CreatePhotosService {
+  response: PptrRes = {};
   constructor(private devices: DevicesService) {}
   async takePhotos(url: string, elementSelector: string) {
     await (async () => {
@@ -19,7 +21,8 @@ export class CreatePhotosService {
           deviceIndex < this.devices.devices.length;
           deviceIndex += 1
         ) {
-          const deviceTags = this.devices[deviceIndex];
+          const deviceTags = this.devices.devices[deviceIndex];
+          console.log({ deviceTags });
           await page.emulate(puppeteer.devices[deviceTags.key]);
           await this.takeShot(deviceTags.fileName, page, elementSelector);
         }
@@ -40,16 +43,21 @@ export class CreatePhotosService {
       }
       await browser.close();
     })();
-    return { status: 'photoshoot finished' };
+    console.log(this.response);
+    return this.response;
   }
   async takeShot(
     fileName: string,
     page: puppeteer.Page,
     elementSelector: string,
   ) {
-    await page.evaluate((selector) => {
-      document.querySelector(selector).scrollIntoView();
-    }, elementSelector);
+    try {
+      await page.evaluate((selector) => {
+        document.querySelector(selector).scrollIntoView();
+      }, elementSelector);
+    } catch (error) {
+      this.response.selectorStatus = `invalid selector ${elementSelector}`;
+    }
 
     await page.screenshot({
       path: `./photographer_photos/${fileName}.png`,
