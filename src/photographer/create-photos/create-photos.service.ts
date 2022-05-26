@@ -19,38 +19,22 @@ export class CreatePhotosService {
           deviceIndex < this.devices.devices.length;
           deviceIndex += 1
         ) {
-          await this.takeShot(
-            this.devices.devices[deviceIndex],
-            page,
-            elementSelector,
-          );
+          const deviceTags = this.devices[deviceIndex];
+          await page.emulate(puppeteer.devices[deviceTags.key]);
+          await this.takeShot(deviceTags.fileName, page, elementSelector);
         }
         await page.emulate({
           viewport: { width: 1920, height: 1080 },
           userAgent: 'Desktop Computer 2',
         });
 
-        await page.evaluate((selector) => {
-          document.querySelector(selector).scrollIntoView();
-        }, elementSelector);
-
-        await page.screenshot({
-          path: `./photographer_photos/1929x1080.png`,
-          captureBeyondViewport: false,
-        });
+        await this.takeShot('1929x1080', page, elementSelector);
 
         await page.emulate({
           viewport: { width: 1366, height: 768 },
           userAgent: 'Desktop Computer',
         });
-        await page.evaluate((selector) => {
-          document.querySelector(selector).scrollIntoView();
-        }, elementSelector);
-
-        await page.screenshot({
-          path: `./photographer_photos/1366x768.png`,
-          captureBeyondViewport: false,
-        });
+        await this.takeShot('1366x768', page, elementSelector);
       } catch (error) {
         console.error(error);
       }
@@ -59,19 +43,16 @@ export class CreatePhotosService {
     return { status: 'photoshoot finished' };
   }
   async takeShot(
-    device: ChosenDevice,
+    fileName: string,
     page: puppeteer.Page,
     elementSelector: string,
   ) {
-    const deviceOptions = puppeteer.devices[device.key];
-
-    await page.emulate(deviceOptions);
-
     await page.evaluate((selector) => {
       document.querySelector(selector).scrollIntoView();
     }, elementSelector);
+
     await page.screenshot({
-      path: `./photographer_photos/${device.fileName}.png`,
+      path: `./photographer_photos/${fileName}.png`,
       captureBeyondViewport: false,
     });
   }
